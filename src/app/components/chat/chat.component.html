@@ -1,0 +1,29 @@
+<!-- chat.component.html --> 
+<div class="app-container">
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <ul class="menu-options">
+      <li class="active">Chat</li>
+      <li>Settings</li>
+      <li>Profile</li>
+      <li>Contacts</li>
+    </ul>
+  </div>
+ <div class="main-content">
+<div class="chat-container">
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+    <button class="close-error" (click)="errorMessage = ''">×</button>
+  </div>
+    <div class="chat-messages">
+      <div *ngFor="let message of messages" [ngClass]="{'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}">
+        {{ message.text }}
+      </div>
+    </div>
+    <div class="input-container">
+      <input type="text" [(ngModel)]="prompt" placeholder="Type a message..." (keydown.enter)="generateText()">
+      <button (click)="generateText()">Send</button>
+    </div>
+  </div>  
+</div>
+  </div>
