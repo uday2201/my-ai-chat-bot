@@ -6,15 +6,10 @@
       <li class="active">Chat</li>
       <li>Settings</li>
       <li>Profile</li>
-      <li>Contacts</li>
     </ul>
   </div>
  <div class="main-content">
 <div class="chat-container">
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-    <button class="close-error" (click)="errorMessage = ''">×</button>
-  </div>
     <div class="chat-messages">
       <div *ngFor="let message of messages" [ngClass]="{'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}">
         {{ message.text }}

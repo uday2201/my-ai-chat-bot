@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { OpenaiService } from '../../services/openai.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorDialogComponent } from '../error/error-dialogue.component';
 
 @Component({
   selector: 'app-chat',
@@ -16,7 +18,7 @@ export class ChatComponent implements OnInit {
   isGenerating: boolean = false;
   errorMessage = '';
 
-  constructor(private _openAiService: OpenaiService) {}
+  constructor(private _openAiService: OpenaiService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.isGenerating = false;
@@ -24,8 +26,8 @@ export class ChatComponent implements OnInit {
 
   generateText() {
     this.errorMessage = '';
-    if (!this.prompt || this.prompt.trim() === '') {
-      this.errorMessage = 'Please enter a message';
+    if (!this.prompt?.trim()) {
+      this.showError('Please enter a message');
       return;
     }
     if (this.isGenerating) return;  
@@ -38,11 +40,18 @@ export class ChatComponent implements OnInit {
         this.isGenerating = false;
       },
       error: (error) => {
-        this.errorMessage = 'An error occurred while processing your request';
+        this.showError(error?.statusText || 'Failed to send message');
         console.error('Error generating response:', error);
         this.isGenerating = false;
         this.prompt = '';
       }
+    });
+  }
+
+  private showError(message: string) {
+    this.dialog.open(ErrorDialogComponent, {
+      data: { message },
+      width: '300px'
     });
   }
 }
