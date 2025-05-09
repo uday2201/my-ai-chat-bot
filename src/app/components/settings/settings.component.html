@@ -1,0 +1,13 @@
+<select 
+  [(ngModel)]="selectedModel" 
+  (ngModelChange)="onModelChange()"
+  class="model-dropdown"
+>
+  <option [value]="''">Select a model</option>
+  <option 
+    *ngFor="let model of models" 
+    [value]="model.id"
+  >
+    {{ model.id }}
+  </option>
+</select>

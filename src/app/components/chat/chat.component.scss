@@ -34,32 +34,6 @@
   }
 }
 
-.error-message {
-  background-color: #ffebee;
-  color: #c62828;
-  padding: 12px 15px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  border-left: 4px solid #c62828;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  
-  .close-error {
-    background: none;
-    border: none;
-    color: #c62828;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 10px;
-    
-    &:hover {
-      color: #8e0000;
-    }
-  }
-}
-
 .main-content {
   flex: 1;
   display: flex;

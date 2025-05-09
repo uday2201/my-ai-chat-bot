@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, model } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,29 @@ export class OpenaiService {
    + 'bxCmgmcprZkmFvIRPpSI-5pymOAxYRdIA';
 
   private apiUrl = 'https://api.openai.com/v1/chat/completions'; 
+  private getModelsUrl = 'https://api.openai.com/v1/models';
+
+  private currentModel = new BehaviorSubject<string>('gpt-4.1');
+  currentModel$ = this.currentModel.asObservable();
 
   constructor(private _hhtp: HttpClient) { }
+
+  setCurrentModel(model: string): void {
+    this.currentModel.next(model);
+    localStorage.setItem('openai-model', model);
+  }
+
+  // Get current model synchronously
+  getCurrentModel(): string {
+    return this.currentModel.value;
+  }
+
+  initializeModel() {
+    const savedModel = localStorage.getItem('openai-model');
+    if (savedModel) {
+      this.currentModel.next(savedModel);
+    }
+  }
 
   generateResponse(prompt: string) {
     const headers = new HttpHeaders({
@@ -20,7 +42,7 @@ export class OpenaiService {
     });
 
     const body = {
-      "model": "gpt-4.1",
+      "model": this.getCurrentModel(),
       "messages": [
         {
           "role": "developer",
@@ -36,5 +58,13 @@ export class OpenaiService {
     return this._hhtp.post(this.apiUrl, body, {headers: headers});
 
 
+  }
+
+  getAiModel() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.apiKey}`
+    });
+    return this._hhtp.get(this.getModelsUrl, {headers: headers});
   }
 }

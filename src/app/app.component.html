@@ -1,1 +1,14 @@
-<router-outlet></router-outlet>
+<div class="app-container">
+    <div class="sidebar">
+    <div class="menu-container">
+      <ul class="menu-options">
+      <li [class.active]="isActive('chat')" (click)="navigateTo('chat')">Chat</li>
+      <li [class.active]="isActive('settings')" (click)="navigateTo('settings')">Settings</li>
+      <li>Profile</li>
+      </ul>
+    </div>
+    </div>
+    <div class="content-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>

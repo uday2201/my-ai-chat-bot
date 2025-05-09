@@ -4,12 +4,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from '../error/error-dialogue.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   imports: [CommonModule, FormsModule],
-  providers: [OpenaiService],
+  providers: [OpenaiService, NavigationService],
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
@@ -18,9 +19,11 @@ export class ChatComponent implements OnInit {
   isGenerating: boolean = false;
   errorMessage = '';
 
-  constructor(private _openAiService: OpenaiService, private dialog: MatDialog) {}
+  constructor(private _openAiService: OpenaiService, private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
+    this._openAiService.initializeModel();
     this.isGenerating = false;
   }
 
